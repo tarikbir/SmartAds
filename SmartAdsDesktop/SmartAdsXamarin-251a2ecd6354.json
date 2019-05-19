@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smartadsxamarin",
+  "private_key_id": "251a2ecd6354bff1cffadfb67b728892092c46ed",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDkiw+KcqvNjA55\nNhDaoUpCaAJAc8NsQKDlhkmec6++N9lW9Xcbm6LY0vjZTnpPorgUuHx4mCYBFmH/\nWedbVkICbPhJagg4tqctZ40J0CW4mOPU6Pg33KCbQ7uYOdFiWxcLsLzk6D5xxsVr\ngOux7NpQld1+iJHliDvxawVkNsiyU/MdhEA0L2JO9jSx7WuxUafmHw2BuZ9OfyzQ\nF5KQaF/nWTP5DvWCSNG8ekD1P20LkaQ0BC/6NVmO8LNIIqo7A4t8eryDhfE6v0aa\nk9P3JNk74QTZLqqJc/o1jU9qXLRCnDV5dPbhOWpkbFJJq8HEmHIg+sZ0HhPbRO24\n56VC8RbbAgMBAAECggEACPQXukVOzMExafc/xsjt11cqy2qdm9aWVxehN7dxiaK3\nfYwlS+wXf6YYQK8t5IPL8Wfe3HyddIpzcWUMxsvEz0KEoZ+pTct+Fi3J3ToN2EMJ\nHfS4kLuwgRSwu0B8nv1RlFAqvk8I7z0py9HjqfdNAD42zLe9+3+QVZ9rOSdaSn4j\nfm6aRnHXeJ0CD7gaKmdJ8JvoSxu/cUzyM6FoGHfWWuisPrKq6Mjc9DO4V3P2z9TH\nsyfTf4W1rR281x5oOSJHlwrM1Q6PCtbPaP2l1iwDN3HmPSQLepxht0oOsF9rHBVP\nxeHT9QhBwkE4IsiHlq5ksBtqyQrYQ6GoTV+PEOQUeQKBgQD8YziOUp/Mm/Zman2H\n7XT02HDX6jXpAxERPkAbtAYHojtaPToV26znBSz0WIH8b1b/9QALTlkMq2zzruNS\nCGSHnR/QnWPHRNVCHiYEYtolcef9uyAinyeun+p+YozUK8d603PszCNAySDFQo1a\nhsYXNUS7fF926EYf6lRM+x4FCQKBgQDn0HiXs/uTqOGG6lfr5AW+rfnluWk8DEa5\nDPhYaaCHwZlfjfmBbn8HE5Byu7f6ueIMTDmSQ/G3vjuDsEFavHeO7tIigNdSwFX5\n79XGBnjtkuwlrILUBtQQlxq3qW2D6LlS4hFoUfybuJyGTBmhTOEf/kvQl8NEz07G\nuYBOg6J5wwKBgAu5ABN8Ovfh9pvjLll16gzFUNh2hHKCNfS7E3c18WHBY0hZt6z0\nOx+v2dqvkboL4dqZoprj1LcF71WSNfTFdwXlgmjKJqxGwjED/XgOr1s14zSh0GhL\nRCiUPOwJ38irD+TglW3WPXzw2pjO8onV4LWLP9oFeNmpCDjLRYcd0tMhAoGBAOGu\nUKkIXSU9JgsN/Hi3rmwbvg1LO8ts/DFOEj0o4FMqRKIFe2Hp7Bs8jcVVQeEDtLFa\nSDZAlYPX3OLw5j9q+k6Z7NQQcRCsFUfVmV5HkNVh0ys+TsQSvcRFB4rElMz19e5e\nDqpsHyyPRztrvQwO56EZFkBGb6F+3eeUUvidKMG3AoGAU4W5shUV++P4xDfsK2sy\nzL5Z47f+RVOE2puSHX2EyZgC8eJpAFdOO/kSO/mOSsRaSHrU640XT6shhlckazaA\nOLG1JTUFJNa4G48kjxecIb4z6i+BE1juM7/BhuQi2KQFMSA31f9xitSk/C2viLD/\n6Gsza9TIMKphlHRM5aVRhpo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "smartadsxamarin@appspot.gserviceaccount.com",
+  "client_id": "109546752883743649279",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/smartadsxamarin%40appspot.gserviceaccount.com"
+}

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "739250387296",
+    "firebase_url": "https://smartadsxamarin.firebaseio.com",
+    "project_id": "smartadsxamarin",
+    "storage_bucket": "smartadsxamarin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739250387296:android:311a3aba5b97d385",
+        "android_client_info": {
+          "package_name": "com.company.smartads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739250387296-kh4qaev0qsbo3pltbctgf60l5jrk92iu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.smartads",
+            "certificate_hash": "6def8e34281990fbc8dce662dcc24936e07db5f1"
+          }
+        },
+        {
+          "client_id": "739250387296-hphg1vlrnlklhg0gl7jafh2c4r8mhuk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9S7sWHSLB6xPJcT700WJJaTAM9LW_vcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739250387296-hphg1vlrnlklhg0gl7jafh2c4r8mhuk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

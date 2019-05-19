@@ -1,0 +1,65 @@
+﻿<Window x:Class="SmartAdsDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmartAdsDesktop"
+        mc:Ignorable="d"
+        Title="SmartAds Controller" SizeToContent="WidthAndHeight" Background="AliceBlue">
+    <Grid Background="AliceBlue">
+        <TabControl Background="AliceBlue">
+            <TabItem x:Name="tabCompany" Header="Add New Company" TabIndex="1" GotFocus="TabCompany_GotFocus">
+                <Grid Margin="10">
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,10,0,0">
+                        <Label Content="Company Name"/>
+                        <TextBox x:Name="txtCompanyName" Margin="150,0,0,0" Height="28" Width="150" TabIndex="2" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0">
+                        <Label Content="Company Business"/>
+                        <ComboBox x:Name="cmbCompanyBusiness" Margin="150,0,0,0" Height="28" Width="150" TabIndex="3" VerticalContentAlignment="Center" SelectedIndex="3">
+                            <ComboBoxItem Content="Clothing"/>
+                            <ComboBoxItem Content="Food"/>
+                            <ComboBoxItem Content="Fuel"/>
+                            <ComboBoxItem Content="Other"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,90,0,0">
+                        <Label Content="Company Latitude"/>
+                        <TextBox x:Name="txtCompanyLatitude" Margin="150,0,0,0" Height="28" Width="150" TabIndex="4" PreviewTextInput="TxtCompanyLatitude_PreviewTextInput" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,130,0,0">
+                        <Label Content="Company Longitude"/>
+                        <TextBox x:Name="txtCompanyLongitude" Margin="150,0,0,0" Height="28" Width="150" TabIndex="5" PreviewTextInput="TxtCompanyLongitude_PreviewTextInput" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,170,0,0">
+                        <Button x:Name="btnSend" Content="Send" Height="32" Width="100" Margin="10"  Click="BtnSend_Click" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabCampaign" Header="Add New Campaign" GotFocus="TabCampaign_GotFocus">
+                <Grid Margin="10">
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,10,0,0">
+                        <Label Content="Campaign Name"/>
+                        <TextBox x:Name="txtCampaignName" Margin="150,0,0,0" Height="28" Width="150" TabIndex="2" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0">
+                        <Label Content="Company"/>
+                        <ComboBox x:Name="cmbCampaignCompany" Margin="150,0,0,0" Height="28" Width="150" TabIndex="3" VerticalContentAlignment="Center">
+                        </ComboBox>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,90,0,0">
+                        <Label Content="Campaign Description"/>
+                        <TextBox x:Name="txtCampaignDescription" Margin="150,0,0,0" Height="28" Width="150" TabIndex="4" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,130,0,0">
+                        <Label Content="Campaign Deadline"/>
+                        <DatePicker x:Name="dpCampaignDeadline" Margin="150,0,0,0" Height="28" Width="150" TabIndex="5" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,170,0,0">
+                        <Button x:Name="btnSendCampaign" Content="Send" Height="32" Width="100" Margin="10"  Click="BtnSendCampaign_Click" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
