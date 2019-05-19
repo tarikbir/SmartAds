@@ -8,7 +8,5 @@ admin.initializeApp();
 exports.getLocation = functions.https.onRequest((req, res) => {
     res.send("Hello!");
     let sa = JSON.parse(req.body);
-    sa.CompanyLocation._latitude
+    sa.CompanyLocation._latitude;
 });
-
-exports.test = functions.firestore.document("")
