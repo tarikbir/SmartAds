@@ -22,45 +22,21 @@ namespace SmartAds
     [Activity(Label = "CampaignsActivity")]
     public class CampaignsActivity : Activity, ILocationListener
     {
-        LocationManager LocationManager;
-        static Uri endpoint = new Uri("https://smartadsxamarin.firebaseapp.com/getCampaigns");
-        bool locationCheck = true;
-
-        public async void OnLocationChanged(Location location)
-        {
-            if (locationCheck)
-            {
-                locationCheck = false;
-                List<Campaign> camp = await GetResponseFromRequest(new Request() { filter="All", threshold=9999, lat= location.Latitude, lng= location.Longitude});
-                Log.Debug("OnLocationChanged","Got campaigns.");
-                TextView text = FindViewById<TextView>(Resource.Id.link_login);
-                if (camp.Count > 1)
-                    text.Text = camp.FirstOrDefault().ToString();
-
-                locationCheck = true;
-            }
-        }
-
-        public void OnProviderDisabled(string provider)
-        {
-            Log.Debug("Location", "disable.");
-        }
-
-        public void OnProviderEnabled(string provider)
-        {
-            Log.Debug("Location", "enable.");
-        }
-
-        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
-        {
-            Log.Debug("Location", "status.");
-        }
+        private LocationManager LocationManager;
+        private static Uri endpoint = new Uri("https://smartadsxamarin.firebaseapp.com/getCampaigns");
+        HttpClient httpClient;
+        private bool locationCheck = true;
+        private ListView listView;
+        private TextView FilterText;
+        private string filter;
+        private TextView ThresholdText;
+        private int threshold;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             ShowToast(this, "Successfully logged in.", ToastLength.Short);
-
+            httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(7) };
             ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation, Manifest.Permission.Internet }, 10);
             if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted)
             {
@@ -69,12 +45,56 @@ namespace SmartAds
             }
 
             SetContentView(2130968602);
+
+            FilterText = FindViewById<TextView>(Resource.Id.text_filter);
+            ThresholdText = FindViewById<TextView>(Resource.Id.text_threshold);
+            listView = FindViewById<ListView>(Resource.Id.campaign_list);
+            ChangeFilter("All");
+            FilterText.Click += FilterText_Click;
+            ChangeThreshold(500);
+            ThresholdText.Click += ThresholdText_Click;
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public async void OnLocationChanged(Location location)
+        {
+            if (locationCheck)
+            {
+                locationCheck = false;
+                List<Campaign> camp = await GetResponseFromRequest(new Request() { filter = filter, threshold = threshold, lat = location.Latitude, lng = location.Longitude });
+                Log.Debug("OnLocationChanged","Got campaigns response.");
+                if (camp.Count > 0)
+                {
+                    CampaignListAdapter arrayAdapter = new CampaignListAdapter(this, camp);
+                    listView.Adapter = arrayAdapter;
+                }
+
+                locationCheck = true;
+            }
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+            Log.Debug("Location", "Provider disabled.");
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+            Log.Debug("Location", "Provider enabled.");
+        }
+
+        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
+        {
+            Log.Debug("Location", "Provider status changed.");
         }
 
         private async Task<List<Campaign>> GetResponseFromRequest(Request req)
         {
             List<Campaign> camp = new List<Campaign>(); ;
-            HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(7) };
             var jsonSerializer = JsonConvert.SerializeObject(req);
             var content = new StringContent(jsonSerializer, Encoding.UTF8, "application/json");
             try
@@ -96,9 +116,60 @@ namespace SmartAds
             return camp;
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        private void ChangeFilter(string newFilter)
         {
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            filter = newFilter;
+            FilterText.Text = GetString(Resource.String.filter) + filter;
+        }
+
+        private void ChangeThreshold(int newThreshold)
+        {
+            threshold = newThreshold;
+            ThresholdText.Text = GetString(Resource.String.threshold) + threshold.ToString();
+        }
+
+
+        private void ThresholdText_Click(object sender, EventArgs e)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetTitle("Change threshold...");
+
+            EditText input = new EditText(this);
+
+            input.SetRawInputType(Android.Text.InputTypes.ClassNumber | Android.Text.InputTypes.NumberVariationNormal);
+            input.TextAlignment = TextAlignment.TextStart;
+            builder.SetView(input);
+
+            builder.SetPositiveButton("SET", (s, dialogEvent) => {
+                Int32.TryParse(input.Text, out int n);
+                ChangeThreshold(n);
+            });
+            builder.SetNegativeButton("CANCEL", (s, dialogEvent) => {
+                (s as Dialog).Dismiss();
+            });
+
+            builder.Show();
+        }
+
+        private void FilterText_Click(object sender, EventArgs e)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetTitle("Change filter...");
+
+            EditText input = new EditText(this);
+
+            input.SetRawInputType(Android.Text.InputTypes.ClassText | Android.Text.InputTypes.TextVariationNormal);
+            input.TextAlignment = TextAlignment.TextStart;
+            builder.SetView(input);
+
+            builder.SetPositiveButton("SET", (s, dialogEvent) => {
+                ChangeFilter(input.Text);
+            });
+            builder.SetNegativeButton("CANCEL", (s, dialogEvent) => {
+                (s as Dialog).Dismiss();
+            });
+
+            builder.Show();
         }
     }
 }

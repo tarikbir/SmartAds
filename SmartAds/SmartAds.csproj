@@ -63,6 +63,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CampaignListAdapter.cs" />
     <Compile Include="CampaignsActivity.cs" />
     <Compile Include="Classes\Campaign.cs" />
     <Compile Include="Classes\Common.cs" />

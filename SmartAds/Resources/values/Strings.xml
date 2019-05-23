@@ -4,4 +4,6 @@
   <string name="create_account">Do not have an account? Create one here.</string>
   <string name="login">Already have an account? Login here.</string>
   <string name="forgot_pass">Forgot your password?</string>
+  <string name="filter">Filter: </string>
+  <string name="threshold">Threshold: </string>
 </resources>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SmartAds
 {
     [Serializable]
-    class Campaign
+    public class Campaign
     {
         public string CampaignName { get; set; }
         public Dictionary<string, long> CampaignDeadline
