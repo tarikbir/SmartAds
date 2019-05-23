@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">SmartAds</string>
-    <string name="action_settings">Settings</string>
+  <string name="app_name">SmartAds</string>
+  <string name="action_settings">Settings</string>
+  <string name="create_account">Do not have an account? Create one here.</string>
+  <string name="login">Already have an account? Login here.</string>
+  <string name="forgot_pass">Forgot your password?</string>
 </resources>

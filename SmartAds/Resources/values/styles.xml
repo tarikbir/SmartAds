@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SmartAds" parent ="Theme.AppCompat.Light.NoActionBar">
+      <item name="colorPrimary">@color/SmartAdsPrimary</item>
+      <item name="colorPrimaryDark">@color/SmartAdsPrimaryDark</item>
+      <item name="colorAccent">@color/SmartAdsAccentColor</item>
+    </style>
+  
 </resources>

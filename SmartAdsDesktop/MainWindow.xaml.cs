@@ -94,15 +94,33 @@ namespace SmartAdsDesktop
 
         private async Task<WriteResult> AddCampaign(string campaignName, string campaignDescription, string campaignDeadline, string companyID)
         {
-            Google.Cloud.Firestore.DocumentReference docRef = fs.Collection("campaigns").Document();
-            Dictionary<string, object> data = new Dictionary<string, object>
+            Google.Cloud.Firestore.DocumentReference docRef = fs.Collection("companies").Document(companyID);
+
+            var snapshot = await docRef.GetSnapshotAsync();
+            
+            Dictionary<string, object> data = snapshot.ToDictionary();
+            if (data.ContainsKey("Campaigns"))
             {
-                { "CampaignName", campaignName },
-                { "CampaignDescription", campaignDescription },
-                { "CampaignDeadline", campaignDeadline },
-                { "companyID", companyID }
-            };
-            return await docRef.SetAsync(data);
+                (data["Campaigns"] as List<object>).Add(new Dictionary<string, object>() {
+                        { "Name", campaignName },
+                        { "Description", campaignDescription },
+                        { "Deadline", campaignDeadline } });
+            }
+            else
+            {
+                data = new Dictionary<string, object>
+                {
+                    { "Campaigns", new List<Dictionary<string, object>>() {
+                        new Dictionary<string, object>() {
+                            { "Name", campaignName },
+                            { "Description", campaignDescription },
+                            { "Deadline", campaignDeadline }
+                        } }
+                    }
+                };
+            }
+
+            return await docRef.SetAsync(data, SetOptions.MergeAll);
         }
 
         private void TxtCompanyLatitude_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -126,7 +144,8 @@ namespace SmartAdsDesktop
                 {
                     Company cmp = new Company();
                     Dictionary<string, object> documentDictionary = document.ToDictionary();
-                    cmp.CompanyName = documentDictionary["CompanyName"].ToString();
+                    var compName = (documentDictionary.ContainsKey("CompanyName"))? documentDictionary["CompanyName"].ToString(): "No Name";
+                    cmp.CompanyName = compName;
                     cmp.ID = document.Id;
                     companyList.Add(cmp);
                 }

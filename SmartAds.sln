@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAds", "SmartAds\SmartA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAdsDesktop", "SmartAdsDesktop\SmartAdsDesktop.csproj", "{4E86409B-3968-4CD9-BD58-9AAD0362B028}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FirebaseCloud", "FirebaseCloud\FirebaseCloud.njsproj", "{B0A6E8CD-C1A3-40FD-A467-595A731B5B00}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{4E86409B-3968-4CD9-BD58-9AAD0362B028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E86409B-3968-4CD9-BD58-9AAD0362B028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E86409B-3968-4CD9-BD58-9AAD0362B028}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0A6E8CD-C1A3-40FD-A467-595A731B5B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0A6E8CD-C1A3-40FD-A467-595A731B5B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0A6E8CD-C1A3-40FD-A467-595A731B5B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0A6E8CD-C1A3-40FD-A467-595A731B5B00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
