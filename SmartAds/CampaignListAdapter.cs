@@ -46,10 +46,10 @@ namespace SmartAds
                 holder = new CampaignListAdapterViewHolder();
                 var inflater = context.GetSystemService(Context.LayoutInflaterService).JavaCast<LayoutInflater>();
                 view = inflater.Inflate(Resource.Layout.listview_single, parent, false);
-                holder.CampaignName = view.FindViewById<TextView>(2131427499);
-                holder.CampaignDescription = view.FindViewById<TextView>(2131427500);
-                holder.Distance = view.FindViewById<TextView>(2131427502);
-                holder.Duration = view.FindViewById<TextView>(2131427501);
+                holder.CampaignName = view.FindViewById<TextView>(Resource.Id.campaign_name); 
+                holder.CampaignDescription = view.FindViewById<TextView>(Resource.Id.campaign_description);
+                holder.Distance = view.FindViewById<TextView>(Resource.Id.campaign_distance);
+                holder.Duration = view.FindViewById<TextView>(Resource.Id.campaign_duration);
                 view.Tag = holder;
             }
 

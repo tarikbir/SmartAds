@@ -23,14 +23,18 @@ namespace SmartAds
     public class CampaignsActivity : Activity, ILocationListener
     {
         private LocationManager LocationManager;
+        private double latestLat;
+        private double latestLng;
         private static Uri endpoint = new Uri("https://smartadsxamarin.firebaseapp.com/getCampaigns");
-        HttpClient httpClient;
+        private HttpClient httpClient;
         private bool locationCheck = true;
         private ListView listView;
         private TextView FilterText;
         private string filter;
         private TextView ThresholdText;
         private int threshold;
+        private TextView GpsBrokenText;
+        private bool isGpsBrokenTextClicked;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -38,43 +42,72 @@ namespace SmartAds
             ShowToast(this, "Successfully logged in.", ToastLength.Short);
             httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(7) };
             ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation, Manifest.Permission.Internet }, 10);
-            if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted)
-            {
-                LocationManager = (LocationManager)GetSystemService(LocationService);
-                LocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, this);
-            }
-
             SetContentView(2130968602);
-
-            FilterText = FindViewById<TextView>(Resource.Id.text_filter);
-            ThresholdText = FindViewById<TextView>(Resource.Id.text_threshold);
-            listView = FindViewById<ListView>(Resource.Id.campaign_list);
-            ChangeFilter("All");
-            FilterText.Click += FilterText_Click;
-            ChangeThreshold(500);
-            ThresholdText.Click += ThresholdText_Click;
+            InitializeContent();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted) InitializeLocationManager();
         }
 
-        public async void OnLocationChanged(Location location)
+        private void InitializeContent()
+        {
+            FilterText = FindViewById<TextView>(Resource.Id.text_filter);
+            ThresholdText = FindViewById<TextView>(Resource.Id.text_threshold);
+            listView = FindViewById<ListView>(Resource.Id.campaign_list);
+            GpsBrokenText = FindViewById<TextView>(Resource.Id.text_brokengps);
+            isGpsBrokenTextClicked = false;
+            filter = "All";
+            FilterText.Text = GetString(Resource.String.filter) + filter;
+            FilterText.Click += FilterText_Click;
+            threshold = 80;
+            ThresholdText.Text = GetString(Resource.String.threshold) + threshold.ToString();
+            ThresholdText.Click += ThresholdText_Click;
+            GpsBrokenText.Click += GpsBrokenText_Click;
+            latestLat = 0;
+            latestLng = 0;
+        }
+
+        private void InitializeLocationManager()
+        {
+            LocationManager = (LocationManager)GetSystemService(LocationService);
+            LocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, this);
+        }
+
+        public void OnLocationChanged(Location location)
+        {
+            LocationChangeCallback(location.Latitude, location.Longitude);
+        }
+
+        private async void LocationChangeCallback(double lat, double lng)
         {
             if (locationCheck)
             {
                 locationCheck = false;
-                List<Campaign> camp = await GetResponseFromRequest(new Request() { filter = filter, threshold = threshold, lat = location.Latitude, lng = location.Longitude });
-                Log.Debug("OnLocationChanged","Got campaigns response.");
+                latestLat = lat;
+                latestLng = lng;
+                List<Campaign> camp = await GetResponseFromRequest(new Request() { filter = filter, threshold = threshold, lat = lat, lng = lng });
+                Log.Debug("OnLocationChanged", "Got campaigns response.");
                 if (camp.Count > 0)
                 {
                     CampaignListAdapter arrayAdapter = new CampaignListAdapter(this, camp);
                     listView.Adapter = arrayAdapter;
                 }
-
+                else
+                {
+                    listView.Adapter = null;
+                }
                 locationCheck = true;
             }
+        }
+
+        private void LocationChangeCallback()
+        {
+            Location l = LocationManager.GetLastKnownLocation(LocationManager.GpsProvider);
+            LocationChangeCallback(l.Latitude, l.Longitude);
         }
 
         public void OnProviderDisabled(string provider)
@@ -120,12 +153,16 @@ namespace SmartAds
         {
             filter = newFilter;
             FilterText.Text = GetString(Resource.String.filter) + filter;
+            if (LocationManager != null) LocationChangeCallback();
+            else LocationChangeCallback(latestLat, latestLng);
         }
 
         private void ChangeThreshold(int newThreshold)
         {
             threshold = newThreshold;
             ThresholdText.Text = GetString(Resource.String.threshold) + threshold.ToString();
+            if (LocationManager != null) LocationChangeCallback();
+            else LocationChangeCallback(latestLat, latestLng);
         }
 
 
@@ -164,6 +201,62 @@ namespace SmartAds
 
             builder.SetPositiveButton("SET", (s, dialogEvent) => {
                 ChangeFilter(input.Text);
+            });
+            builder.SetNegativeButton("CANCEL", (s, dialogEvent) => {
+                (s as Dialog).Dismiss();
+            });
+
+            builder.Show();
+        }
+
+        private void GpsBrokenText_Click(object sender, EventArgs e)
+        {
+            if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted)
+            {
+                if (!isGpsBrokenTextClicked)
+                {
+                    ShowToast(this, "Location services are disabled.", ToastLength.Short);
+                    LocationManager.RemoveUpdates(this);
+                    LocationManager.Dispose();
+                    LocationManager = null;
+                    isGpsBrokenTextClicked = true;
+                    GpsBrokenText.Text = "Click here to re-enable location services.";
+                }
+                else
+                {
+                    ShowToast(this, "Location services are enabled.", ToastLength.Short);
+                    InitializeLocationManager();
+                    isGpsBrokenTextClicked = false;
+                    GpsBrokenText.Text = GetString(Resource.String.brokengps);
+                    return;
+                }
+            }
+            else
+            {
+                GpsBrokenText.Text = "Click here to search again!";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetTitle("Manual search");
+
+            LinearLayout layout = new LinearLayout(this);
+            layout.Orientation = Orientation.Vertical;
+
+            EditText inputLat = new EditText(this);
+            EditText inputLng = new EditText(this);
+
+            layout.AddView(inputLat);
+            layout.AddView(inputLng);
+
+            inputLat.SetRawInputType(Android.Text.InputTypes.ClassNumber | Android.Text.InputTypes.NumberFlagDecimal);
+            inputLng.SetRawInputType(Android.Text.InputTypes.ClassNumber | Android.Text.InputTypes.NumberFlagDecimal);
+            inputLat.TextAlignment = TextAlignment.TextStart;
+            inputLng.TextAlignment = TextAlignment.TextStart;
+            builder.SetView(layout);
+
+            builder.SetPositiveButton("SET", (s, dialogEvent) => {
+                if (Double.TryParse(inputLat.Text, out double lat)) (s as Dialog).Dismiss();
+                if (Double.TryParse(inputLng.Text, out double lng)) (s as Dialog).Dismiss();
+                LocationChangeCallback(lat, lng);
             });
             builder.SetNegativeButton("CANCEL", (s, dialogEvent) => {
                 (s as Dialog).Dismiss();
