@@ -56,9 +56,17 @@ namespace SmartAds
             //fill in your items
             holder.CampaignName.Text = campaigns[position].CampaignName + " (" + campaigns[position].CampaignCompanyName + ")";
             holder.CampaignDescription.Text = campaigns[position].CampaignDescription;
-            holder.Duration.Text = $"{campaigns[position].CampaignDeadlineDT.Subtract(DateTime.Today).TotalDays:F0} days left";
-            holder.Distance.Text = $"{campaigns[position].CampaignDistance:F1} kms";
-
+            DateTime dt = campaigns[position].CampaignDeadlineDT;
+            double remainingDays = dt.Subtract(DateTime.Today).TotalDays;
+            holder.Duration.Text = (remainingDays > 1) ? 
+                                        $"{remainingDays:F0} days left" : 
+                                        (remainingDays <= 1 && remainingDays >= 0) ?
+                                            "Less than a day left" :
+                                            "Expired";
+            double distance = campaigns[position].CampaignDistance;
+            holder.Distance.Text = (distance > 1) ? 
+                                        $"{distance:F1} km" :
+                                        "Nearby";
             return view;
         }
 

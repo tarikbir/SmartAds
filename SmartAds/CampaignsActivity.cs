@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
-using Android.Content;
 using Android.Locations;
 using Android.OS;
 using Android.Runtime;
@@ -25,7 +23,7 @@ namespace SmartAds
         private LocationManager LocationManager;
         private double latestLat;
         private double latestLng;
-        private static Uri endpoint = new Uri("https://smartadsxamarin.firebaseapp.com/getCampaigns");
+        private static Uri endpoint = new Uri("https://europe-west1-smartadsxamarin.cloudfunctions.net/getCampaigns");
         private HttpClient httpClient;
         private bool locationCheck = true;
         private ListView listView;
@@ -50,7 +48,10 @@ namespace SmartAds
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted) InitializeLocationManager();
+            if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) == Android.Content.PM.Permission.Granted)
+            {
+                InitializeLocationManager();
+            }
         }
 
         private void InitializeContent()
@@ -90,7 +91,6 @@ namespace SmartAds
                 latestLat = lat;
                 latestLng = lng;
                 List<Campaign> camp = await GetResponseFromRequest(new Request() { filter = filter, threshold = threshold, lat = lat, lng = lng });
-                Log.Debug("OnLocationChanged", "Got campaigns response.");
                 if (camp.Count > 0)
                 {
                     CampaignListAdapter arrayAdapter = new CampaignListAdapter(this, camp);

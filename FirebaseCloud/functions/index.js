@@ -1,4 +1,3 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
 
 const firebase = require('firebase-admin')
@@ -9,7 +8,7 @@ firebase.initializeApp({
     databaseURL: "https://${process.env.GCLOUD_PROJECT}.firebaseio.com"
 });
 
-exports.getCampaigns = functions.https.onRequest((req, res) => {
+exports.getCampaigns = functions.region('europe-west1').https.onRequest((req, res) => {
     let reqJson = req.body;
     let lat = reqJson.lat;
     let lng = reqJson.lng;
@@ -47,7 +46,9 @@ exports.getCampaigns = functions.https.onRequest((req, res) => {
                 }
             }
         });
-        res.send(allCampaigns);
+        res.send(allCampaigns.sort((a, b) => {
+            return parseFloat(a.CampaignDistance) - parseFloat(b.CampaignDistance);
+        }));
     }).catch((err) => {
         console.log('LOG: Error while getting data.', err);
     });
