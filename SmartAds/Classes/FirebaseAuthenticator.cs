@@ -5,40 +5,33 @@ namespace SmartAds
 {
     public class FirebaseAuthenticator
     {
-        public async Task<LocalUser> LoginWithEmailPassword(string email, string password)
+        public async Task<FirebaseUser> LoginWithEmailPassword(string email, string password)
         {
-            LocalUser user;
+            FirebaseUser user;
             try
             {
                 var authResult = await FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password);
-                var tokenResult = await authResult.User.GetIdTokenAsync(false);
-                user = new LocalUser(authResult, tokenResult.Token);
-                user.Result = true;
+                user = authResult.User;
             }
             catch
             {
-                user = new LocalUser();
-                user.Result = false;
+                user = null;
             }
             return user;
         }
 
-        public async Task<LocalUser> CreateUserWithEmailPassword(string email, string password)
+        public async Task<FirebaseUser> CreateUserWithEmailPassword(string email, string password)
         {
-            LocalUser user;
+            FirebaseUser user;
             try
             {
                 var authResult = await FirebaseAuth.Instance.CreateUserWithEmailAndPasswordAsync(email, password);
-                var tokenResult = await authResult.User.GetIdTokenAsync(false);
-                user = new LocalUser(authResult, tokenResult.Token);
-                user.Result = true;
+                user = authResult.User;
             }
             catch
             {
-                user = new LocalUser();
-                user.Result = false;
+                user = null;
             }
-            
             return user;
         }
 

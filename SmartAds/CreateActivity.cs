@@ -5,6 +5,7 @@ using Android.Widget;
 using Android.Content;
 using System;
 using static SmartAds.Common;
+using Firebase.Auth;
 
 namespace SmartAds
 {
@@ -22,8 +23,8 @@ namespace SmartAds
 
             Button btnCreate = FindViewById<Button>(Resource.Id.btn_signup);
             btnCreate.Click += async (sender, e) => {
-                LocalUser user = await firebaseAuth.CreateUserWithEmailPassword(txtEmail.Text, txtPass.Text);
-                if (!String.IsNullOrEmpty(user.Token))
+                FirebaseUser user = await firebaseAuth.CreateUserWithEmailPassword(txtEmail.Text, txtPass.Text);
+                if (user != null)
                 {
                     ShowToast(this, "Successfully created account!", ToastLength.Short);
                     Intent nextActivity = new Intent(this, typeof(CampaignsActivity));

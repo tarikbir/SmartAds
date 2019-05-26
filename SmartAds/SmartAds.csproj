@@ -72,7 +72,6 @@
     <Compile Include="Classes\Common.cs" />
     <Compile Include="Classes\FirebaseAuthenticator.cs" />
     <Compile Include="Classes\Request.cs" />
-    <Compile Include="Classes\LocalUser.cs" />
     <Compile Include="CreateActivity.cs" />
     <Compile Include="ForgotActivity.cs" />
     <Compile Include="MainActivity.cs" />

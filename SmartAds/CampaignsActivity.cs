@@ -12,6 +12,7 @@ using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Firebase.Auth;
 using Newtonsoft.Json;
 using static SmartAds.Common;
 
@@ -33,6 +34,7 @@ namespace SmartAds
         private int threshold;
         private TextView GpsBrokenText;
         private bool isGpsBrokenTextClicked;
+        private bool backButtonSecondPressCheck;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -54,6 +56,22 @@ namespace SmartAds
             }
         }
 
+        public override void OnBackPressed()
+        {
+            if (!backButtonSecondPressCheck)
+            {
+                ShowToast(this, "Press again to logout.", ToastLength.Short);
+                backButtonSecondPressCheck = true;
+            }
+            else
+            {
+                backButtonSecondPressCheck = false;
+                FirebaseAuth.Instance.SignOut();
+                MainActivity.user = null;
+                base.OnBackPressed();
+            }
+        }
+
         private void InitializeContent()
         {
             FilterText = FindViewById<TextView>(Resource.Id.text_filter);
@@ -70,6 +88,7 @@ namespace SmartAds
             GpsBrokenText.Click += GpsBrokenText_Click;
             latestLat = 0;
             latestLng = 0;
+            backButtonSecondPressCheck = false;
         }
 
         private void InitializeLocationManager()
